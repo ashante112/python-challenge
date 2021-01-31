@@ -14,7 +14,7 @@ changes_in_profit_losses = []
 greatest_increase = ["", 0]
 greatest_decrease = ["", 999999999999999]
 
-# Open file to read (in read mode)
+# Open file to read 
 with open(csvpath, 'r') as csvfile:
     csvreader=csv.reader(csvfile, delimiter=',')
     
@@ -23,6 +23,7 @@ with open(csvpath, 'r') as csvfile:
     first_row = next(csvreader)
     initial_net = int(first_row[1])
 
+    # Loop to append lists for report
     for n in csvreader:
         month = n[0]
         months.append(month)
@@ -34,6 +35,7 @@ with open(csvpath, 'r') as csvfile:
         initial_net = int(n[1])
         changes_in_profit_losses.append(net_change)
 
+        # Conditional to establish greatest increase/decrease
         if net_change > greatest_increase[1]:
             greatest_increase[0] = n[0]
             greatest_increase[1] = net_change
@@ -41,10 +43,12 @@ with open(csvpath, 'r') as csvfile:
             greatest_decrease[0] = n[0]
             greatest_decrease[1] = net_change
 
+# Set variables and calculate results for report
 total_months = len(months)
 net_profit_losses = sum(profit_losses)
-net_monthly_average = sum(changes_in_profit_losses)/len(changes_in_profit_losses)
+net_monthly_average = round(sum(changes_in_profit_losses)/len(changes_in_profit_losses),2)
 
+# Print report results
 print(f"Financial Analysis")
 print(f"_______________________________")
 print(f"Total Months: {total_months}")
@@ -53,9 +57,10 @@ print(f"Average Change: ${net_monthly_average}")
 print(f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]})")
 print(f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]})")
 
-# Create Output file
+# Create output file
 output_path = os.path.join("Analysis","output.txt")
 
+# Set print results to output variable
 output=(
     f"\nFinancial Analysis\n"
     f"_______________________________\n"
@@ -66,5 +71,6 @@ output=(
     f"Greatest Decrease In Profits: {greatest_decrease[0]} (${greatest_decrease[1]})\n"
 )
 
+# Write output to text file
 with open(output_path, 'w', newline="") as txtfile:
     txtfile.write(output)
